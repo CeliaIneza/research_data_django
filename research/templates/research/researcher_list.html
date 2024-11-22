@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Researchers</h2>
+<a href="{% url 'add_researcher' %}" class="btn btn-success">Add Researcher</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>First_Name</th>
+            <th>Last_Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for researcher in researchers %}
+        <tr>
+            <td>{{ researcher.first_name }}</td>
+            <td>{{ researcher.last_name }}</td>
+            <td>{{ researcher.email }}</td>
+            <td>
+                <a href="{% url 'researcher_detail' researcher.pk %}" class="btn btn-info">View</a>
+                <a href="{% url 'edit_researcher' researcher.pk %}" class="btn btn-warning">Edit</a>
+                <form method="POST" action="{% url 'delete_researcher' researcher.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

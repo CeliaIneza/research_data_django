@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Researcher Details</h2>
+<p><strong>First_Name:</strong> {{ researcher.first_name }}</p>
+<p><strong>Last_Name:</strong> {{ researcher.last_name }}</p>
+<p><strong>Email:</strong> {{ researcher.email }}</p>
+<p><strong>Contact:</strong> {{ researcher.contacts }}</p>
+<p><strong>Address:</strong> {{ researcher.address }}</p>
+<a href="{% url 'researcher_list' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}

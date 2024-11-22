@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Research Projects</h2>
+<a href="{% url 'add_project' %}" class="btn btn-success">Add Project</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project.title }}</td>
+            <td>
+                <a href="{% url 'project_detail' project.pk %}" class="btn btn-info">View</a>
+                <a href="{% url 'edit_project' project.pk %}" class="btn btn-warning">Edit</a>
+                <form method="POST" action="{% url 'delete_project' project.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div>
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    const ctx = document.getElementById('myChart');
+
+    const dataPoints = [
+        {% for data in context %}
+            {
+                title: "{{ data.title }}",
+                researchers_count: {{ data.researchers_count }}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const titles = dataPoints.map(data => data.title);
+    const researchersCount = dataPoints.map(data => data.researchers_count);
+    
+      
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: titles,
+        datasets: [{
+          label: 'Researchers',
+          data: researchersCount,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+  
+{% endblock %}
+
